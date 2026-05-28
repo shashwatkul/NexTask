@@ -77,7 +77,7 @@ The dashboard provides a real-time overview of productivity metrics.
 # 📸 Screenshots
 
 ## Login
-![Login](screenshots/login.png)
+![Login](login.png)
 
 User login along with registration.
 
@@ -92,7 +92,7 @@ Real-time productivity metrics, AI standup generation, and quick actions.
 
 ## Workspaces
 
-![Workspaces](screenshots/workspace.png)
+![Workspaces](workspace.png)
 
 Create and manage collaborative workspaces with role-based access control.
 
@@ -100,7 +100,7 @@ Create and manage collaborative workspaces with role-based access control.
 
 ## Projects
 
-![Projects](screenshots/Projects.png)
+![Projects](Projects.png)
 
 Organize work into projects within each workspace.
 
@@ -108,7 +108,7 @@ Organize work into projects within each workspace.
 
 ## Kanban Board
 
-![Kanban Board](screenshots/Kanban.png)
+![Kanban Board](Kanban.png)
 
 Manage tasks through an intuitive drag-and-drop workflow.
 
