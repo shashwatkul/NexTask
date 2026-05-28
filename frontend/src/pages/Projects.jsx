@@ -1,28 +1,36 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
-  createWorkspace,
-  getWorkspaces,
-} from "../api/workspaceApi";
+  createProject,
+  getProjects,
+} from "../api/projectApi";
 
-function Workspaces() {
-    const navigate = useNavigate();
+function Projects() {
 
-  const [workspaces, setWorkspaces] = useState([]);
+  const { workspaceId } = useParams();
+
+  const navigate = useNavigate();
+
+  const [projects, setProjects] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
     description: "",
   });
 
-  const fetchWorkspaces = async () => {
+  const fetchProjects = async () => {
 
     try {
 
-      const response = await getWorkspaces();
+      const response = await getProjects(
+        workspaceId
+      );
 
-      setWorkspaces(response.data);
+      console.log(response.data);
+
+      setProjects(response.data);
 
     } catch (error) {
 
@@ -32,7 +40,7 @@ function Workspaces() {
 
   useEffect(() => {
 
-    fetchWorkspaces();
+    fetchProjects();
 
   }, []);
 
@@ -50,14 +58,17 @@ function Workspaces() {
 
     try {
 
-      await createWorkspace(form);
+      await createProject({
+        ...form,
+        workspace_id: workspaceId
+      });
 
       setForm({
         name: "",
         description: "",
       });
 
-      fetchWorkspaces();
+      fetchProjects();
 
     } catch (error) {
 
@@ -68,13 +79,9 @@ function Workspaces() {
   return (
     <div className="p-10">
 
-      <div className="flex justify-between items-center mb-10">
-
-        <h1 className="text-4xl font-bold">
-          Workspaces
-        </h1>
-
-      </div>
+      <h1 className="text-4xl font-bold mb-10">
+        Projects
+      </h1>
 
       <form
         onSubmit={handleSubmit}
@@ -84,7 +91,7 @@ function Workspaces() {
         <input
           type="text"
           name="name"
-          placeholder="Workspace name"
+          placeholder="Project name"
           value={form.name}
           onChange={handleChange}
           className="border p-3 rounded-lg w-full mb-4"
@@ -102,29 +109,28 @@ function Workspaces() {
           type="submit"
           className="bg-black text-white px-6 py-3 rounded-lg"
         >
-          Create Workspace
+          Create Project
         </button>
 
       </form>
 
       <div className="grid grid-cols-3 gap-6">
 
-        {workspaces.map((workspace) => (
-
-          <div
-  key={workspace.id}
+        {projects.map((project) => (
+<div
+  key={project.id}
   onClick={() =>
-    navigate(`/projects/${workspace.id}`)
+    navigate(`/kanban/${project.id}`)
   }
   className="bg-white p-6 rounded-2xl shadow-md cursor-pointer hover:shadow-xl transition"
 >
 
             <h2 className="text-2xl font-bold mb-2">
-              {workspace.name}
+              {project.name}
             </h2>
 
             <p className="text-gray-600">
-              {workspace.description}
+              {project.description}
             </p>
 
           </div>
@@ -137,4 +143,4 @@ function Workspaces() {
   );
 }
 
-export default Workspaces;
+export default Projects;

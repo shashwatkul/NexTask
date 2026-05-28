@@ -4,6 +4,12 @@ from flask_cors import CORS
 from config import Config
 from extensions import db, jwt, bcrypt
 from routes.workspace_routes import workspace_bp
+from routes.project_routes import project_bp
+from routes.task_routes import task_bp
+from routes.dashboard_routes import dashboard_bp
+from routes.comment_routes import comment_bp
+from routes.activity_routes import activity_bp
+from routes.profile_routes import profile_bp
 
 def create_app():
 
@@ -27,6 +33,34 @@ def create_app():
     app.register_blueprint(
     workspace_bp,
     url_prefix="/api/workspaces"
+)
+    
+    app.register_blueprint(
+    project_bp,
+    url_prefix="/api/projects"
+)
+    
+    app.register_blueprint(
+    task_bp,
+    url_prefix="/api/tasks"
+)
+    
+    app.register_blueprint(
+    dashboard_bp,
+    url_prefix="/api/dashboard"
+)
+    app.register_blueprint(
+    comment_bp,
+    url_prefix="/api/comments"
+)
+
+    app.register_blueprint(
+    activity_bp,
+    url_prefix="/api/activity"
+)
+    app.register_blueprint(
+    profile_bp,
+    url_prefix="/api/profile"
 )
 
     return app

@@ -22,16 +22,30 @@ function Dashboard() {
 
       <div className="flex justify-between items-center mb-10">
 
+
+
         <h1 className="text-4xl font-bold">
           Welcome {user?.name}
+
+          <div className="flex gap-4">
+
+  <button
+    onClick={() => navigate("/profile")}
+    className="bg-blue-500 text-white px-5 py-2 rounded-lg"
+  >
+    Profile
+  </button>
+
+  <button
+    onClick={handleLogout}
+    className="bg-red-500 text-white px-5 py-2 rounded-lg"
+  >
+    Logout
+  </button>
+
+</div>
         </h1>
 
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-5 py-2 rounded-lg"
-        >
-          Logout
-        </button>
 
       </div>
 
