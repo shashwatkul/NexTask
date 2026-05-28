@@ -84,7 +84,7 @@ User login along with registration.
 
 ## Dashboard
 
-![Dashboard](screenshots/Dashboard.png)
+![Dashboard](Dashboard.png)
 
 Real-time productivity metrics, AI standup generation, and quick actions.
 
