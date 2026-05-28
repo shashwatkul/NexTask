@@ -68,5 +68,78 @@ def get_comments(task_id):
             "content": comment.content,
             "user_id": comment.user_id
         })
-
     return jsonify(result)
+
+# UPDATE COMMENT
+@comment_bp.route(
+    "/<int:comment_id>",
+    methods=["PUT"]
+)
+@jwt_required()
+def update_comment(comment_id):
+
+    user_id = get_jwt_identity()
+
+    comment = Comment.query.get(
+        comment_id
+    )
+
+    if not comment:
+
+        return jsonify({
+            "message": "Comment not found"
+        }), 404
+
+    if str(comment.user_id) != str(user_id):
+
+        return jsonify({
+            "message": "Unauthorized"
+        }), 403
+
+    data = request.get_json()
+
+    comment.content = data.get(
+        "content",
+        comment.content
+    )
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Comment updated"
+    })
+
+
+# DELETE COMMENT
+@comment_bp.route(
+    "/<int:comment_id>",
+    methods=["DELETE"]
+)
+@jwt_required()
+def delete_comment(comment_id):
+
+    user_id = get_jwt_identity()
+
+    comment = Comment.query.get(
+        comment_id
+    )
+
+    if not comment:
+
+        return jsonify({
+            "message": "Comment not found"
+        }), 404
+
+    if str(comment.user_id) != str(user_id):
+
+        return jsonify({
+            "message": "Unauthorized"
+        }), 403
+
+    db.session.delete(comment)
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Comment deleted"
+    })

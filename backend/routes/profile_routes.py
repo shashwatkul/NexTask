@@ -15,7 +15,7 @@ profile_bp = Blueprint(
 )
 
 # GET PROFILE
-@profile_bp.route("/", methods=["GET"])
+@profile_bp.route("", methods=["GET"])
 @jwt_required()
 def get_profile():
 
@@ -31,7 +31,7 @@ def get_profile():
 
 
 # UPDATE PROFILE
-@profile_bp.route("/", methods=["PUT"])
+@profile_bp.route("", methods=["PUT"])
 @jwt_required()
 def update_profile():
 

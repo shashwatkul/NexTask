@@ -4,6 +4,7 @@
 
 body {
   margin: 0;
-  background: #f5f7fb;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: linear-gradient(to bottom right, #eef2ff, #ffffff, #f3e8ff);
 }

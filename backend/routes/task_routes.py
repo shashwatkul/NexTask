@@ -41,38 +41,56 @@ def create_task():
 
 
 # GET TASKS
-@task_bp.route("/<int:project_id>", methods=["GET"])
+@task_bp.route(
+    "/<int:project_id>",
+    methods=["GET"]
+)
 @jwt_required()
 def get_tasks(project_id):
 
-    status = request.args.get("status")
-    priority = request.args.get("priority")
-    assigned_to = request.args.get("assigned_to")
+    page = request.args.get(
+        "page",
+        1,
+        type=int
+    )
+
+    per_page = 5
 
     query = Task.query.filter_by(
         project_id=project_id
     )
 
+    status = request.args.get("status")
+    priority = request.args.get("priority")
+    assigned_to = request.args.get("assigned_to")
+
     if status:
+
         query = query.filter_by(
             status=status
         )
 
     if priority:
+
         query = query.filter_by(
             priority=priority
         )
 
     if assigned_to:
+
         query = query.filter_by(
             assigned_to=assigned_to
         )
 
-    tasks = query.all()
+    tasks = query.paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
 
     result = []
 
-    for task in tasks:
+    for task in tasks.items:
 
         result.append({
             "id": task.id,
@@ -80,15 +98,15 @@ def get_tasks(project_id):
             "description": task.description,
             "status": task.status,
             "priority": task.priority,
-            "due_date": (
-                task.due_date.strftime("%Y-%m-%d")
-                if task.due_date else None
-            ),
-            "assigned_to": task.assigned_to
+            "due_date": task.due_date,
+            "assigned_to": task.assigned_to,
         })
 
-    return jsonify(result)
-
+    return jsonify({
+        "tasks": result,
+        "total_pages": tasks.pages,
+        "current_page": tasks.page
+    })
 
 # UPDATE TASK STATUS
 @task_bp.route("/<int:task_id>", methods=["PUT"])

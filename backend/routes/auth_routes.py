@@ -7,6 +7,8 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
+
+
 from extensions import db, bcrypt
 from models.user import User
 
@@ -90,6 +92,20 @@ def login():
             "name": user.name,
             "email": user.email
         }
+    })
+
+@auth_bp.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+
+    user_id = get_jwt_identity()
+
+    access_token = create_access_token(
+        identity=user_id
+    )
+
+    return jsonify({
+        "access_token": access_token
     })
 
 

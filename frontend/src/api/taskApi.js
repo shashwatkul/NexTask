@@ -5,12 +5,16 @@ export const createTask = (data) =>
 
 export const getTasks = (
   projectId,
-  filters = {}
+  filters,
+  page = 1
 ) =>
   API.get(`/tasks/${projectId}`, {
-    params: filters,
+    params: {
+      ...filters,
+      page,
+    },
   });
-
+  
 export const updateTask = (
   taskId,
   data

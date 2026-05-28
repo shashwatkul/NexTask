@@ -1,5 +1,8 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
+from datetime import timedelta
 
 from config import Config
 from extensions import db, jwt, bcrypt
@@ -11,11 +14,27 @@ from routes.comment_routes import comment_bp
 from routes.activity_routes import activity_bp
 from routes.profile_routes import profile_bp
 
+from routes.ai_routes import ai_bp
+from dotenv import load_dotenv
+load_dotenv()
+print(
+    os.getenv(
+        "JWT_SECRET_KEY"
+    )
+)
+
 def create_app():
 
     app = Flask(__name__)
 
     app.config.from_object(Config)
+    app.config["JWT_SECRET_KEY"] = os.getenv(
+    "JWT_SECRET_KEY"
+)
+
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
+
+    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=7)
 
     CORS(app)
 
@@ -61,6 +80,17 @@ def create_app():
     app.register_blueprint(
     profile_bp,
     url_prefix="/api/profile"
+)
+    
+    app.register_blueprint(
+    ai_bp,
+    url_prefix="/api/ai"
+    
+)
+    print(
+    os.getenv(
+        "OPENAI_API_KEY"
+    )
 )
 
     return app

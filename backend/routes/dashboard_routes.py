@@ -6,6 +6,8 @@ from flask_jwt_extended import (
 )
 
 from datetime import date, timedelta
+from models.project import Project
+from models.workspace import Workspace
 
 from models.task import Task
 
@@ -18,8 +20,9 @@ dashboard_bp = Blueprint(
 @jwt_required()
 def get_metrics():
 
-    user_id = get_jwt_identity()
-
+    user_id = int(
+    get_jwt_identity()
+)
     today = date.today()
 
     assigned_tasks = Task.query.filter_by(
@@ -49,9 +52,26 @@ def get_metrics():
     ).count()
 
     return jsonify({
-        "assigned_tasks": assigned_tasks,
-        "completed_tasks": completed_tasks,
-        "open_tasks": open_tasks,
-        "overdue_tasks": overdue_tasks,
-        "upcoming_deadlines": upcoming_deadlines
-    })
+
+    "assigned_tasks":
+        assigned_tasks,
+
+    "upcoming_deadlines":
+        upcoming_deadlines,
+
+    "open_tasks":
+        open_tasks,
+
+    "overdue_tasks":
+        overdue_tasks,
+
+    "completed_tasks":
+        completed_tasks,
+
+    "total_projects":
+        Project.query.count(),
+
+    "total_workspaces":
+        Workspace.query.count()
+})
+    
